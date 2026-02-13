@@ -517,9 +517,11 @@
             continue;
         }
         if (trimmed.startsWith('#')) {
-            results.push('!' + trimmed.slice(1));
-            continue;
-        }
+    let comment = '!' + trimmed.slice(1);
+    comment = comment.replace(/^! Project home page:/i, '! Homepage:');
+    results.push(comment);
+    continue;
+}
         const commentIndex = trimmed.indexOf('#');
         let mainPart = trimmed;
         let inlineComment = '';
@@ -633,4 +635,5 @@
 
 
 </html>
+
 
