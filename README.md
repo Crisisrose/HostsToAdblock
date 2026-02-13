@@ -6,7 +6,7 @@
 
 ## English
 
-Converts hosts-formatted text into DNS blocklists compatible with AdblockPlus syntax, for use with ad blockers such as uBlock Origin.
+Converts hosts-formatted text into DNS blocklists compatible with AdblockPlus syntax, for ad blockers such as uBlock Origin.
 
 #### Example
 
