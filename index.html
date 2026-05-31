@@ -19,6 +19,10 @@
     })();
     </script>
     <title>HostsToAdblock</title>
+    <link rel="preload" href="/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/Inter-Medium.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/Outfit-Bold.woff2" as="font" type="font/woff2" crossorigin>
+
     <meta name="description" content="hostsファイルをAdblock形式（||domain^）に変換。127.0.0.1や0.0.0.0のブロックリストをワンクリックで変換できるWebツール">
     <link rel="canonical" href="https://hosts-to-adblock.pages.dev/">
     <meta name="robots" content="index, follow">
@@ -29,19 +33,27 @@
     <meta name="twitter:card" content="summary">
     <style>
         @font-face {
-            font-family: InterVariable;
+            font-family: 'Inter';
             font-style: normal;
-            font-weight: 400 600;
+            font-weight: 400;
             font-display: swap;
-            src: url("InterVariable.woff2") format("woff2");
+            src: url("/fonts/Inter-Regular.woff2") format("woff2");
         }
 
         @font-face {
-            font-family: OutfitVariable;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 500;
+            font-display: swap;
+            src: url("/fonts/Inter-Medium.woff2") format("woff2");
+        }
+
+        @font-face {
+            font-family: 'Outfit';
             font-style: normal;
             font-weight: 700;
-            font-display: swap;
-            src: url("Outfit[wght].woff2") format("woff2");
+            font-display: optional;
+            src: url("/fonts/Outfit-Bold.woff2") format("woff2");
         }
 
         :root {
@@ -55,15 +67,9 @@
             --btn-primary: #0ea5e9;
             --btn-hover: #0284c7;
             --editor-border: rgba(255, 255, 255, 0.1);
-            --font-main: 'InterVariable', 'Inter', sans-serif;
-            --font-heading: 'OutfitVariable', 'Outfit', sans-serif;
+            --font-main: 'Inter', system-ui, sans-serif;
+            --font-heading: 'Outfit', 'Inter', sans-serif;
             --transition-speed: 0.3s;
-        }
-
-        @supports (font-variation-settings: normal) {
-            :root {
-                font-optical-sizing: auto;
-            }
         }
 
         /* Light Mode Variables (Eye-friendly & WCAG AAA) */
@@ -416,24 +422,29 @@
             left: -0.3em;
         }
 
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--accent-color);
-            color: var(--bg-color);
-            padding: 0.75rem 1.5rem;
-            border-radius: 2rem;
-            font-weight: 600;
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 100;
-            opacity: 0;
+        /* Toast Notification - ボタン横に表示 */
+        .actions {
+            position: relative;
         }
-
+        .toast {
+            position: absolute;
+            top: -2.8rem;
+            right: 0;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            padding: 0.35rem 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 0.85rem;
+            border: 1px solid var(--editor-border);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease;
+            white-space: nowrap;
+            backdrop-filter: blur(8px);
+            z-index: 10;
+        }
         .toast.show {
-            transform: translateX(-50%) translateY(0);
             opacity: 1;
         }
 
@@ -550,6 +561,7 @@
                                 <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
                             </svg>
                         </button>
+                        <div id="toast" class="toast">コピーしました</div>
                     </div>
                 </div>
                 <textarea id="output-text" readonly
@@ -559,9 +571,7 @@
     </main>
     <footer>
         <p>&copy; 2026 Crisisrose</p>
-    </footer>
-    <div id="toast" class="toast">copied !</div>
-    <script>
+    </footer><script>
         document.addEventListener('DOMContentLoaded', () => {
             const inputText = document.getElementById('input-text');
             const outputText = document.getElementById('output-text');
@@ -650,7 +660,7 @@
             });
             function showToast() {
                 toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 2000);
+                setTimeout(() => toast.classList.remove('show'), 1500);
             }
 
             /* ── Theme Switcher ── */
