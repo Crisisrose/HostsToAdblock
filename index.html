@@ -4,8 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <script>
+    // 最初のペイント前にテーマを決定 — FOUC防止
+    (function() {
+      try {
+        var theme = localStorage.getItem('theme') || 'system';
+        var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var useLight = theme === 'light' || (theme === 'system' && !dark);
+        if (useLight) document.documentElement.classList.add('theme-light');
+        // 初期トランジションを無効化（チラつき防止）
+        document.documentElement.style.setProperty('--transition-speed', '0s');
+      } catch(e) {}
+    })();
+    </script>
     <title>HostsToAdblock</title>
-    <title>HostsToAdblock - hostsをAdblock形式に変換</title>
     <meta name="description" content="hostsファイルをAdblock形式（||domain^）に変換。127.0.0.1や0.0.0.0のブロックリストをワンクリックで変換できるWebツール">
     <link rel="canonical" href="https://hosts-to-adblock.pages.dev/">
     <meta name="robots" content="index, follow">
@@ -679,6 +692,8 @@
 
                 localStorage.setItem('theme', theme);
                 currentTheme = theme;
+                // 初回適用後にトランジションを戻す
+                setTimeout(function(){ document.documentElement.style.removeProperty('--transition-speed'); }, 0);
             }
 
             themeToggle.addEventListener('click', () => {
