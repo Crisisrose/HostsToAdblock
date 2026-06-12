@@ -1,0 +1,4 @@
+/*
+  Content-Security-Policy: frame-ancestors 'none';
+  Access-Control-Allow-Origin: https://hosts-to-adblock.pages.dev
+  Vary: Origin
