@@ -2,3 +2,4 @@
   Content-Security-Policy: frame-ancestors 'none';
   Access-Control-Allow-Origin: https://hosts-to-adblock.pages.dev
   Vary: Origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
